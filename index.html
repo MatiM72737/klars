@@ -18,23 +18,48 @@
             #countdown {
                 font-size: 2em;
                 margin-top: 20px;
+                transition: opacity 1s ease-in-out;
+            }
+            #quiz {
+                display: none;
+                opacity: 0;
+                transition: opacity 1s ease-in-out;
+                text-align: center;
+            }
+            button {
+                margin-top: 10px;
+                padding: 10px;
+                font-size: 1em;
+                cursor: pointer;
             }
         </style>
     </head>
     <body>
         <h1>Odliczanie do wybranej daty</h1>
         <div id="countdown">Ładowanie...</div>
+        <div id="quiz">
+            <h2>Mini Test</h2>
+            <p>Jaki jest wynik 5 + 3?</p>
+            <button onclick="checkAnswer(8)">8</button>
+            <button onclick="checkAnswer(10)">10</button>
+        </div>
 
         <script>
-            // Ustaw docelową datę (rok, miesiąc [0-11], dzień, godzina, minuta, sekunda)
-            const countdownDate = new Date(2025, 11, 31, 23, 59, 59).getTime();
+            const countdownDate = new Date(2025, 2, 17, 20, 27, 00).getTime();
 
             function updateCountdown() {
                 const now = new Date().getTime();
                 const distance = countdownDate - now;
 
                 if (distance < 0) {
-                    document.getElementById("countdown").innerHTML = "Czas minął!";
+                    document.getElementById("countdown").style.opacity = 0;
+                    setTimeout(() => {
+                        document.getElementById("countdown").style.display = "none";
+                        document.getElementById("quiz").style.display = "block";
+                        setTimeout(() => {
+                            document.getElementById("quiz").style.opacity = 1;
+                        }, 100);
+                    }, 1000);
                     clearInterval(interval);
                     return;
                 }
@@ -46,6 +71,14 @@
 
                 document.getElementById("countdown").innerHTML =
                     `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            function checkAnswer(answer) {
+                if (answer === 8) {
+                    alert("Poprawna odpowiedź!");
+                } else {
+                    alert("Niepoprawna odpowiedź, spróbuj ponownie.");
+                }
             }
 
             const interval = setInterval(updateCountdown, 1000);
