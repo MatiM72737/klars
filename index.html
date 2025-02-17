@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Odliczanie do daty</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #282c36;
+                color: white;
+                flex-direction: column;
+            }
+            #countdown {
+                font-size: 2em;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Odliczanie do wybranej daty</h1>
+        <div id="countdown">Ładowanie...</div>
+
+        <script>
+            // Ustaw docelową datę (rok, miesiąc [0-11], dzień, godzina, minuta, sekunda)
+            const countdownDate = new Date(2025, 11, 31, 23, 59, 59).getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+
+                if (distance < 0) {
+                    document.getElementById("countdown").innerHTML = "Czas minął!";
+                    clearInterval(interval);
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML =
+                    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            const interval = setInterval(updateCountdown, 1000);
+            updateCountdown();
+        </script>
+    </body>
+</html>
